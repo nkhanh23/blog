@@ -11,6 +11,16 @@ class Post extends CoreModel
         return $this->getALL("SELECT * FROM posts");
     }
 
+    public function getAllPostsAuthor()
+    {
+        return $this->getALL("SELECT posts.*, authors.name as author_name FROM posts JOIN authors ON posts.author_id = authors.id");
+    }
+
+    public function getOnePost($condition)
+    {
+        return $this->getOne("SELECT * FROM posts Where $condition");
+    }
+
     public function getRowPosts()
     {
         return $this->getRows('SELECT * from posts');
@@ -18,7 +28,7 @@ class Post extends CoreModel
 
     public function insertPosts($data)
     {
-        return $this->update('posts', $data);
+        return $this->insert('posts', $data);
     }
 
     public function updatePosts($data, $condition)
@@ -28,6 +38,6 @@ class Post extends CoreModel
 
     public function deletePosts($condition)
     {
-        return $this->delete('post', $condition);
+        return $this->delete('posts', $condition);
     }
 }

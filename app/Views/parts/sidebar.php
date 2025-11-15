@@ -65,7 +65,7 @@ if (!defined('_nkhanh')) {
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="?module=users&action=list" class="nav-link">
+                            <a href="<?php echo _HOST_URL; ?>/users" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Danh sách tài khoản</p>
                             </a>

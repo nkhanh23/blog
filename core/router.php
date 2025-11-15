@@ -24,10 +24,15 @@ class Router
         if (isset($this->routers[$method][$url])) {
             $action = $this->routers[$method][$url];
             [$controller, $funcs] = explode('@', $action);
-
-            require_once './app/Controllers/' . $controller . '.php';
-            $controllerMot = new $controller();
-            $controllerMot->$funcs();
+            if ($controller == 'HomeController') {
+                require_once './app/Controllers/clients/' . $controller . '.php';
+                $controllerMot = new $controller();
+                $controllerMot->$funcs();
+            } else {
+                require_once './app/Controllers/' . $controller . '.php';
+                $controllerMot = new $controller();
+                $controllerMot->$funcs();
+            }
         } else {
             echo '404 ERROR';
         }

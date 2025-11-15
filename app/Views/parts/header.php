@@ -16,7 +16,7 @@ if (!empty($getInfo)) {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?php echo $data['tittle']; ?></title>
+    <title><?php echo $NameLogin; ?></title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -34,7 +34,7 @@ if (!empty($getInfo)) {
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="../assets/css/admin.css" as="style" />
+    <link rel="preload" href="<?php echo _HOST_URL_PUBLIC; ?>/assets/css/admin.css" as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"

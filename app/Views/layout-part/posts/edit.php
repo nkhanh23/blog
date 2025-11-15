@@ -10,9 +10,10 @@ layout('header', $data);
 layout('sidebar');
 
 
+
 $msg = getSessionFlash('msg');
 $msg_type = getSessionFlash('msg_type');
-$oldData = getSessionFlash('oldData');
+
 $errorsArr  = getSessionFlash('errors');
 
 ?>
@@ -23,6 +24,8 @@ $errorsArr  = getSessionFlash('errors');
     }
     ?>
     <form action="" method="POST" enctype="multipart/form-data">
+        <!-- giữ lại ID của bài viết đang sửa và gửi ID đó về server khi bạn bấm nút “Xác nhận” (POST). -->
+        <input type="hidden" name="idPost" value="<?php echo $idPost; ?>">
         <div class="row">
             <div class="col-12 pb-3">
                 <label for="name">Tiêu đề</label>
@@ -39,11 +42,11 @@ $errorsArr  = getSessionFlash('errors');
             </div>
             <div class="col-12 pb-3">
                 <label for="content">Nội dung</label>
-                <textarea id="content" name="content" type="text" value="<?php
-                                                                            if (!empty($oldData)) {
-                                                                                echo oldata($oldData, 'content');
-                                                                            } ?>" class="form-control"
-                    placeholder="Nội dung">
+                <textarea id="content" name="content" type="text" class="form-control" placeholder="Nội dung">
+                    <?php
+                    if (!empty($oldData)) {
+                        echo oldata($oldData, 'content');
+                    } ?>
                 </textarea>
                 <?php
                 if (!empty($errorsArr)) {
@@ -53,10 +56,11 @@ $errorsArr  = getSessionFlash('errors');
             </div>
             <div class="col-12 pb-3">
                 <label for="tags">Tag</label>
-                <textarea id="tags" name="tags" type="text" value="<?php
-                                                                    if (!empty($oldData)) {
-                                                                        echo oldata($oldData, 'tags');
-                                                                    } ?>" class="form-control" placeholder="Tag">
+                <textarea id="tags" name="tags" type="text" class="form-control" placeholder="Tag">
+                    <?php
+                    if (!empty($oldData)) {
+                        echo oldata($oldData, 'tags');
+                    } ?>
                 </textarea>
             </div>
             <div class="col-3 pb-3">

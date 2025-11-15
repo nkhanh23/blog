@@ -198,7 +198,7 @@ function formError($errors, $fieldName)
 // Hàm hiển thị lại giá trị cũ
 function oldata($oldData, $filedName)
 {
-    return !empty($oldData[$filedName]) ? $oldData[$filedName] : NULL;
+    return (!empty($oldData[$filedName])) ? $oldData[$filedName] : NULL;
 }
 
 
@@ -255,7 +255,7 @@ function getlink($module, $action = '', $param = [])
 function editFormatDate($date)
 {
     $dateObject = date_create($date);
-    $newFormat = date_format($dateObject, 'd/m/Y H:i:s');
+    $newFormat = date_format($dateObject, 'd/m/Y');
     return $newFormat;
 }
 

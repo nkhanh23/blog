@@ -36,9 +36,14 @@
         require_once $filename;
     }
 
+    foreach (glob(__DIR__ . '/app/Controllers/clients/*.php') as $filename) {
+        require_once $filename;
+    }
+
     $projectName = '/MVC';
-    //lay url tren thanh dia chi
+
     $requestUrl =  str_replace($projectName, '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
     $methodRes = $_SERVER['REQUEST_METHOD'];
     $router->xulyPath($methodRes, $requestUrl);
 

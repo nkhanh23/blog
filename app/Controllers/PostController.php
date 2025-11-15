@@ -62,6 +62,7 @@ class PostController extends BaseController
         }
 
         $courseDetail =  $this->postModel->getAllPosts("SELECT * from posts $chuoiWhere
+        ORDER BY created_at DESC
         LIMIT $offset, $perPage
         ");
 
@@ -140,11 +141,21 @@ class PostController extends BaseController
 
     public function showEdit()
     {
-        $this->renderView('layout-part/posts/edit');
+        $filter = filterData('get');
+
+        $condition = 'id=' . $filter['id'];
+        $rel = $this->postModel->getOnePost($condition);
+        $data = [
+            'oldData' => $rel,
+            'idPost' => $filter['id']
+        ];
+
+        $this->renderView('layout-part/posts/edit', $data);
     }
 
     public function edit()
     {
+
         if (isPost()) {
             $filter = filterData();
             $errors = [];
@@ -160,7 +171,7 @@ class PostController extends BaseController
             }
 
             if (empty($errors)) {
-                $dataInsert = [
+                $dataUpdate = [
                     'tittle' => $filter['tittle'],
                     'content' => $filter['content'],
                     'tags' => $filter['tags'],
@@ -168,15 +179,16 @@ class PostController extends BaseController
                     'views' => $filter['views'],
                     'comments' => $filter['comments'],
                     'shares' => $filter['shares'],
-                    'created_at' => date('Y:m:d H:i:s')
+                    'updated_at' => date('Y:m:d H:i:s')
                 ];
-                $insertStatus = $this->postModel->insertPosts($dataInsert);
+                $condition = 'id=' . $filter['idPost'];
+                $insertStatus = $this->postModel->updatePosts($dataUpdate, $condition);
                 if ($insertStatus) {
-                    setSessionFlash('msg', 'Thêm bài viết thành công.');
+                    setSessionFlash('msg', 'Sửa bài viết thành công.');
                     setSessionFlash('msg_type', 'success');
                     reload('/posts');
                 } else {
-                    setSessionFlash('msg', 'Thêm bài viết thất bại.');
+                    setSessionFlash('msg', 'Sửa bài viết thất bại.');
                     setSessionFlash('msg_type', 'danger');
                 }
             } else {
@@ -184,9 +196,34 @@ class PostController extends BaseController
                 setSessionFlash('msg_type', 'danger');
                 setSessionFlash('oldData', $filter);
                 setSessionFlash('errors', $errors);
-                reload('/posts/add');
+                reload('/posts/edit');
             }
-            $this->renderView('layout-part/posts/list');
+            $this->renderView('layout-part/posts/edit');
+        }
+    }
+
+    public function delete()
+    {
+        $filter = filterData('get');
+        if (!empty($filter)) {
+            $posts_id = $filter['id'];
+            $condition = 'id=' . $posts_id;
+            $checkID = $this->postModel->getOnePost($condition);
+            if (!empty($checkID)) {
+                $deleteStatus = $this->postModel->deletePosts("id = $posts_id");
+                if ($deleteStatus) {
+                    setSessionFlash('msg', 'Xoá bài viết thành công.');
+                    setSessionFlash('msg_type', 'success');
+                    reload('/posts');
+                }
+            } else {
+                setSessionFlash('msg', 'Bài viết không tồn tại.');
+                setSessionFlash('msg_type', 'danger');
+                reload('/posts');
+            }
+        } else {
+            setSessionFlash('msg', 'Đã có lỗi xảy ra, vui lòng thử lại sau.');
+            setSessionFlash('msg_type', 'danger');
         }
     }
 }

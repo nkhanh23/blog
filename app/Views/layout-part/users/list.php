@@ -8,7 +8,9 @@ $data = [
 ];
 layout('header', $data);
 layout('side_bar');
-
+// echo '<pre>';
+// print_r($getDetailUser);
+// echo '</pre>';
 $msg = getSessionFlash('msg');
 $msg_type = getSessionFlash('msg_type');
 ?>
@@ -16,20 +18,32 @@ $msg_type = getSessionFlash('msg_type');
 //Header
 $this->renderView('parts/sidebar');
 ?>
-<div class="container grip-user">
+<div style="margin-top: 30px;" class="container grip-user">
     <div class="container-fluid">
-        <a href="<?php echo _HOST_URL; ?>/posts/add" class="btn btn-success mb-3"><i class="fa-solid fa-plus"></i>Thêm
-            mới
-            Post</a>
+        <a href="<?php echo _HOST_URL; ?>/users/add" class="btn btn-success mb-3"><i class="fa-solid fa-plus"></i>Thêm
+            mới người
+            dùng</a>
         <?php
         if (!empty($msg) && !empty($msg_type)) {
             getMsg($msg, $msg_type);
         }
         ?>
         <form class="mb-3" action="" method="get">
-            <input type="hidden" name="module" value="course">
+            <input type="hidden" name="module" value="users">
             <input type="hidden" name="action" value="list">
             <div class="row">
+                <div class="col-3">
+                    <select class="form-select form-control" name="group" id="">
+                        <option value="">Nhóm người dùng</option>
+                        <?php
+                        foreach ($getGroup as $item):
+                        ?>
+                            <option value="<?php echo $item['id']; ?>"
+                                <?php echo ($group == $item['id']) ? 'selected' : false; ?>><?php echo $item['name']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="col-7">
                     <input type="text" class="form-control" value="<?php echo (!empty($keyword)) ? $keyword : false; ?>"
                         name="keyword" placeholder="Nhập thông tin tìm kiếm...">
@@ -41,27 +55,31 @@ $this->renderView('parts/sidebar');
             <thead>
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col">Tiêu đề</th>
-                    <th scope="col">Nội dung</th>
-                    <th scope="col">Ngày viết</th>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Ngày đăng ký</th>
+                    <th scope="col">Nhóm</th>
                     <th scope="col">Sửa</th>
                     <th scope="col">Xoá</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($courseDetail as $key => $item): ?>
+                <?php foreach ($getDetailUser as $key => $item): ?>
                     <tr>
                         <th scope="row"><?php echo $key + 1; ?></th>
-                        <td><?php echo $item['tittle']; ?></td>
-                        <td><?php echo $item['content']; ?></td>
-                        <td><?php echo $item['created_at']; ?></td>
-                        <td><a href="<?php echo _HOST_URL; ?>/posts/edit?id=<?php echo $item['id']; ?>"
+                        <td><?php echo $item['fullname']; ?></td>
+                        <td><?php echo $item['email']; ?></td>
+                        <td><?php echo editFormatDate($item['created_at']); ?></td>
+                        <td><?php echo $item['name']; ?></td>
+                        <td><a href="<?php echo _HOST_URL; ?>/users/edit?id=<?php echo $item['id']; ?>"
                                 class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a></td>
-                        <td><a href="<?php echo _HOST_URL; ?>/posts/delete?id=<?php echo $item['id']; ?>"
+                        <td><a href="<?php echo _HOST_URL; ?>/users/delete?id=<?php echo $item['id']; ?>"
                                 onclick="return confirm('Bạn có chắc chắn muốn xoá không?')" class="btn btn-danger"><i
                                     class="fa-solid fa-trash"></i></a></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php
+                endforeach;
+                ?>
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
@@ -70,7 +88,8 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($page > 1):
                 ?>
-                    <li class="page-item"><a class="page-link" href="list&page=<?php echo $page - 1; ?>">Trước</a></li>
+                    <li class="page-item"><a class="page-link"
+                            href="?module=users&action=list&page=<?php echo $page - 1; ?>">Trước</a></li>
                 <?php endif;
                 ?>
                 <!-- Tinh vi tri bat dau -->
@@ -83,7 +102,8 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($start > 1):
                 ?>
-                    <li class="page-item"><a class="page-link" href="list&page=<?php echo $page - 1; ?>">...</a></li>
+                    <li class="page-item"><a class="page-link"
+                            href="?module=users&action=list&page=<?php echo $page - 1; ?>">...</a></li>
                 <?php endif;
                 $end = $page + 1;
                 if ($end > $maxPage) {
@@ -92,7 +112,7 @@ $this->renderView('parts/sidebar');
                 ?>
                 <?php for ($i = $start; $i <= $end; $i++): ?>
                     <li class="page-item <?php echo ($page == $i) ? 'active' : false; ?>"><a class="page-link"
-                            href="list&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                            href="?module=users&action=list&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 
                 <?php
                 endfor;
