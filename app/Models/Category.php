@@ -11,6 +11,11 @@ class Category extends CoreModel
         return $this->getALL("SELECT * FROM category");
     }
 
+    public function get4Category()
+    {
+        return $this->getALL("SELECT * FROM category LIMIT 4 ");
+    }
+
     public function getOneCategory($condition)
     {
         return $this->getOne("SELECT * FROM category Where $condition");

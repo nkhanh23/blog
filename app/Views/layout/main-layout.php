@@ -1,7 +1,7 @@
 <?php
 layout('clients/header');
 // echo '<pre>';
-// print_r($getAllPostsAuthor);
+// print_r($getCategoryLimit4);
 // echo '</pre>';
 ?>
 
@@ -28,106 +28,33 @@ layout('clients/header');
 <div class="container-fluid features mb-5">
     <div class="container py-5">
         <div class="row g-4">
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="row g-4 align-items-center features-item">
-                    <div class="col-4">
-                        <div class="rounded-circle position-relative">
-                            <div class="overflow-hidden rounded-circle">
-                                <img src="<?php echo _HOST_URL_PUBLIC; ?>/img/features-sports-1.jpg"
-                                    class="img-zoomin img-fluid rounded-circle w-100" alt="">
+            <?php foreach ($getCategoryLimit4 as $item): ?>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="row g-4 align-items-center features-item">
+                        <div class="col-4">
+                            <div class="rounded-circle position-relative">
+                                <div style="width:100px; height:100px;" class="rounded-circle overflow-hidden">
+                                    <img src="<?php echo $item['img'] ?>"
+                                        class="img-zoomin img-fluid w-100 h-100 object-fit-cover" alt="">
+                                </div>
+                                <span
+                                    class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
+                                    style="top: 10%; right: -10px;">3</span>
                             </div>
-                            <span
-                                class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                                style="top: 10%; right: -10px;">3</span>
                         </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="features-content d-flex flex-column">
-                            <p class="text-uppercase mb-2">Sports</p>
-                            <a href="#" class="h6">
-                                Get the best speak market, news.
-                            </a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9,
-                                2024</small>
+                        <div class="col-8">
+                            <div class="features-content d-flex flex-column">
+                                <p class="text-uppercase mb-2"><?php echo $item['name'] ?></p>
+                                <a href="#" class="h6">
+                                    <?php echo $item['description'] ?>
+                                </a>
+                                <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i>
+                                    <?php echo $item['created_at'] ?></small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="row g-4 align-items-center features-item">
-                    <div class="col-4">
-                        <div class="rounded-circle position-relative">
-                            <div class="overflow-hidden rounded-circle">
-                                <img src="<?php echo _HOST_URL_PUBLIC; ?>/img/features-technology.jpg"
-                                    class="img-zoomin img-fluid rounded-circle w-100" alt="">
-                            </div>
-                            <span
-                                class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                                style="top: 10%; right: -10px;">3</span>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="features-content d-flex flex-column">
-                            <p class="text-uppercase mb-2">Technology</p>
-                            <a href="#" class="h6">
-                                Get the best speak market, news.
-                            </a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="row g-4 align-items-center features-item">
-                    <div class="col-4">
-                        <div class="rounded-circle position-relative">
-                            <div class="overflow-hidden rounded-circle">
-                                <img src="<?php echo _HOST_URL_PUBLIC; ?>/img/features-fashion.jpg"
-                                    class="img-zoomin img-fluid rounded-circle w-100" alt="">
-                            </div>
-                            <span
-                                class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                                style="top: 10%; right: -10px;">3</span>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="features-content d-flex flex-column">
-                            <p class="text-uppercase mb-2">Fashion</p>
-                            <a href="#" class="h6">
-                                Get the best speak market, news.
-                            </a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="row g-4 align-items-center features-item">
-                    <div class="col-4">
-                        <div class="rounded-circle position-relative">
-                            <div class="overflow-hidden rounded-circle">
-                                <img src="<?php echo _HOST_URL_PUBLIC; ?>/img/features-life-style.jpg"
-                                    class="img-zoomin img-fluid rounded-circle w-100" alt="">
-                            </div>
-                            <span
-                                class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                                style="top: 10%; right: -10px;">3</span>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="features-content d-flex flex-column">
-                            <p class="text-uppercase mb-2">Life Style</p>
-                            <a href="#" class="h6">
-                                Get the best speak market, news.
-                            </a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
