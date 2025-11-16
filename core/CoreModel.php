@@ -127,7 +127,6 @@ class CoreModel
 
     public function getLastID()
     {
-
         return $this->connect->lastInsertId();
     }
 }

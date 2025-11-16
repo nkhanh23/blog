@@ -27,9 +27,19 @@ $this->renderView('parts/sidebar');
         }
         ?>
         <form class="mb-3" action="" method="get">
-            <input type="hidden" name="module" value="course">
-            <input type="hidden" name="action" value="list">
-            <div class="row">
+            <div class="row mb-3">
+                <div class="col-3">
+                    <select class="form-select form-control" name="cate" id="">
+                        <option value="">Lĩnh vực</option>
+                        <?php
+                        foreach ($getCate as $item):
+                        ?>
+                            <option value="<?php echo $item['id']; ?>"
+                                <?php echo ($cate == $item['id']) ? 'selected' : false; ?>><?php echo $item['name']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="col-7">
                     <input type="text" class="form-control" value="<?php echo (!empty($keyword)) ? $keyword : false; ?>"
                         name="keyword" placeholder="Nhập thông tin tìm kiếm...">
@@ -42,18 +52,22 @@ $this->renderView('parts/sidebar');
                 <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Tiêu đề</th>
+                    <th scope="col">Thumbnail</th>
                     <th scope="col">Nội dung</th>
+                    <th scope="col">Thể loại</th>
                     <th scope="col">Ngày viết</th>
                     <th scope="col">Sửa</th>
                     <th scope="col">Xoá</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($courseDetail as $key => $item): ?>
+                <?php foreach ($postDetail as $key => $item): ?>
                     <tr>
                         <th scope="row"><?php echo $key + 1; ?></th>
                         <td><?php echo $item['tittle']; ?></td>
+                        <td><img width="180px" src="<?php echo $item['thumbnail']; ?>" alt=""></td>
                         <td><?php echo $item['content']; ?></td>
+                        <td><?php echo $item['categories']; ?></td>
                         <td><?php echo $item['created_at']; ?></td>
                         <td><a href="<?php echo _HOST_URL; ?>/posts/edit?id=<?php echo $item['id']; ?>"
                                 class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a></td>
@@ -70,7 +84,7 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($page > 1):
                 ?>
-                    <li class="page-item"><a class="page-link" href="list&page=<?php echo $page - 1; ?>">Trước</a></li>
+                    <li class="page-item"><a class="page-link" href="posts?page=<?php echo $page - 1; ?>">Trước</a></li>
                 <?php endif;
                 ?>
                 <!-- Tinh vi tri bat dau -->
@@ -83,7 +97,7 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($start > 1):
                 ?>
-                    <li class="page-item"><a class="page-link" href="list&page=<?php echo $page - 1; ?>">...</a></li>
+                    <li class="page-item"><a class="page-link" href="posts?page=<?php echo $page - 1; ?>">...</a></li>
                 <?php endif;
                 $end = $page + 1;
                 if ($end > $maxPage) {
@@ -92,14 +106,14 @@ $this->renderView('parts/sidebar');
                 ?>
                 <?php for ($i = $start; $i <= $end; $i++): ?>
                     <li class="page-item <?php echo ($page == $i) ? 'active' : false; ?>"><a class="page-link"
-                            href="list&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                            href="posts?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 
                 <?php
                 endfor;
                 if ($end < $maxPage):
                 ?>
                     <li class="page-item"><a class="page-link"
-                            href="?<?php echo $queryString; ?>&page=<?php echo $page + 1; ?>">...</a></li>
+                            href="?<?php echo $queryString; ?>posts?page=<?php echo $page + 1; ?>">...</a></li>
                 <?php endif;
                 $end = $page + 2;
                 if ($end > $maxPage) {
@@ -111,7 +125,7 @@ $this->renderView('parts/sidebar');
                 if ($page < $maxPage):
                 ?>
                     <li class="page-item"><a class="page-link"
-                            href="?<?php echo $queryString; ?>&page=<?php echo $page + 1; ?>">Sau</a></li>
+                            href="?<?php echo $queryString; ?>posts?page=<?php echo $page + 1; ?>">Sau</a></li>
 
                 <?php endif; ?>
             </ul>

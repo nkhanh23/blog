@@ -38,9 +38,9 @@ $this->renderView('parts/sidebar');
                         <?php
                         foreach ($getGroup as $item):
                         ?>
-                            <option value="<?php echo $item['id']; ?>"
-                                <?php echo ($group == $item['id']) ? 'selected' : false; ?>><?php echo $item['name']; ?>
-                            </option>
+                        <option value="<?php echo $item['id']; ?>"
+                            <?php echo ($group == $item['id']) ? 'selected' : false; ?>><?php echo $item['name']; ?>
+                        </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -65,18 +65,18 @@ $this->renderView('parts/sidebar');
             </thead>
             <tbody>
                 <?php foreach ($getDetailUser as $key => $item): ?>
-                    <tr>
-                        <th scope="row"><?php echo $key + 1; ?></th>
-                        <td><?php echo $item['fullname']; ?></td>
-                        <td><?php echo $item['email']; ?></td>
-                        <td><?php echo editFormatDate($item['created_at']); ?></td>
-                        <td><?php echo $item['name']; ?></td>
-                        <td><a href="<?php echo _HOST_URL; ?>/users/edit?id=<?php echo $item['id']; ?>"
-                                class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a></td>
-                        <td><a href="<?php echo _HOST_URL; ?>/users/delete?id=<?php echo $item['id']; ?>"
-                                onclick="return confirm('Bạn có chắc chắn muốn xoá không?')" class="btn btn-danger"><i
-                                    class="fa-solid fa-trash"></i></a></td>
-                    </tr>
+                <tr>
+                    <th scope="row"><?php echo $key + 1; ?></th>
+                    <td><?php echo $item['fullname']; ?></td>
+                    <td><?php echo $item['email']; ?></td>
+                    <td><?php echo editFormatDate($item['created_at']); ?></td>
+                    <td><?php echo $item['name']; ?></td>
+                    <td><a href="<?php echo _HOST_URL; ?>/users/edit?id=<?php echo $item['id']; ?>"
+                            class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a></td>
+                    <td><a href="<?php echo _HOST_URL; ?>/users/delete?id=<?php echo $item['id']; ?>"
+                            onclick="return confirm('Bạn có chắc chắn muốn xoá không?')" class="btn btn-danger"><i
+                                class="fa-solid fa-trash"></i></a></td>
+                </tr>
                 <?php
                 endforeach;
                 ?>
@@ -88,8 +88,7 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($page > 1):
                 ?>
-                    <li class="page-item"><a class="page-link"
-                            href="?module=users&action=list&page=<?php echo $page - 1; ?>">Trước</a></li>
+                <li class="page-item"><a class="page-link" href="users?page=<?php echo $page - 1; ?>">Trước</a></li>
                 <?php endif;
                 ?>
                 <!-- Tinh vi tri bat dau -->
@@ -102,8 +101,7 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($start > 1):
                 ?>
-                    <li class="page-item"><a class="page-link"
-                            href="?module=users&action=list&page=<?php echo $page - 1; ?>">...</a></li>
+                <li class="page-item"><a class="page-link" href="users?page=<?php echo $page - 1; ?>">...</a></li>
                 <?php endif;
                 $end = $page + 1;
                 if ($end > $maxPage) {
@@ -111,15 +109,15 @@ $this->renderView('parts/sidebar');
                 }
                 ?>
                 <?php for ($i = $start; $i <= $end; $i++): ?>
-                    <li class="page-item <?php echo ($page == $i) ? 'active' : false; ?>"><a class="page-link"
-                            href="?module=users&action=list&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                <li class="page-item <?php echo ($page == $i) ? 'active' : false; ?>"><a class="page-link"
+                        href="users?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 
                 <?php
                 endfor;
                 if ($end < $maxPage):
                 ?>
-                    <li class="page-item"><a class="page-link"
-                            href="?<?php echo $queryString; ?>&page=<?php echo $page + 1; ?>">...</a></li>
+                <li class="page-item"><a class="page-link"
+                        href="?<?php echo $queryString; ?>&page=<?php echo $page + 1; ?>">...</a></li>
                 <?php endif;
                 $end = $page + 2;
                 if ($end > $maxPage) {
@@ -130,8 +128,8 @@ $this->renderView('parts/sidebar');
                 <?php
                 if ($page < $maxPage):
                 ?>
-                    <li class="page-item"><a class="page-link"
-                            href="?<?php echo $queryString; ?>&page=<?php echo $page + 1; ?>">Sau</a></li>
+                <li class="page-item"><a class="page-link"
+                        href="?<?php echo $queryString; ?>&page=<?php echo $page + 1; ?>">Sau</a></li>
 
                 <?php endif; ?>
             </ul>

@@ -140,7 +140,7 @@ layout('clients/header');
         <div class="row g-4">
             <div class="col-lg-7 col-xl-8 mt-0">
                 <div class="position-relative overflow-hidden rounded">
-                    <img src="<?php echo _HOST_URL_PUBLIC; ?>/img/news-1.jpg" class="img-fluid rounded img-zoomin w-100"
+                    <img src="<?php echo $getAllPosts[0]['thumbnail'] ?>" class="img-fluid rounded img-zoomin w-100"
                         alt="">
                     <div class="d-flex justify-content-center px-4 position-absolute flex-wrap"
                         style="bottom: 10px; left: 0;">
@@ -231,8 +231,8 @@ layout('clients/header');
                 <div class="latest-news-item">
                     <div class="bg-light rounded">
                         <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo _HOST_URL_PUBLIC; ?>/img/news-7.jpg"
-                                class="img-zoomin img-fluid rounded-top w-100" alt="">
+                            <img src="<?php echo $item['thumbnail'] ?>" class="img-zoomin img-fluid rounded-top w-100"
+                                alt="">
                         </div>
                         <div class="d-flex flex-column p-4">
                             <a href="#" class="h4"><?php echo $item['tittle'] ?></a>

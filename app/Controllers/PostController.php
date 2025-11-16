@@ -2,10 +2,12 @@
 class PostController extends BaseController
 {
     private $postModel;
+    private $categoryModel;
 
     public function __construct()
     {
         $this->postModel = new Post;
+        $this->categoryModel = new Category;
     }
 
     public function list()
@@ -29,7 +31,7 @@ class PostController extends BaseController
                 } else {
                     $chuoiWhere .= ' AND ';
                 }
-                $chuoiWhere .= "a.name LIKE '%$keyword%' OR a.description LIKE '%$keyword%' ";
+                $chuoiWhere .= "p.tittle LIKE '%$keyword%' OR p.tags LIKE '%$keyword%' ";
             }
 
             if (!empty($cate)) {
@@ -38,7 +40,7 @@ class PostController extends BaseController
                 } else {
                     $chuoiWhere .= ' AND ';
                 }
-                $chuoiWhere .= " a.category_id = $cate ";
+                $chuoiWhere .= " c.id = $cate ";
             }
         }
 
@@ -60,12 +62,17 @@ class PostController extends BaseController
         if (isset($page)) {
             $offset = ($page - 1) * $perPage;
         }
-
-        $courseDetail =  $this->postModel->getAllPosts("SELECT * from posts $chuoiWhere
-        ORDER BY created_at DESC
+        $sql = $sql = "SELECT p.*, GROUP_CONCAT(c.name SEPARATOR ', ') AS categories
+        FROM posts AS p
+        LEFT JOIN post_category pc ON p.id = pc.post_id
+        LEFT JOIN category c ON pc.category_id = c.id
+        $chuoiWhere
+        GROUP BY p.id
+        ORDER BY p.created_at DESC
         LIMIT $offset, $perPage
-        ");
-
+        ";
+        $postDetail =  $this->postModel->getAllPosts($sql);
+        $getCate = $this->categoryModel->getAllCategory();
 
         // Xử lý query
         if (!empty($_SERVER['QUERY_STRING'])) {
@@ -77,19 +84,25 @@ class PostController extends BaseController
 
         $data = [
             'postModel' => $this->postModel,
-            'courseDetail' => $courseDetail,
+            'getCate' => $getCate,
+            'postDetail' => $postDetail,
             'maxData' => $maxData,
             'perPage' => $perPage,
             'maxPage' => $maxPage,
             'offset' => $offset,
-            'page' => $page
+            'page' => $page,
+            'cate' => $cate
         ];
         $this->renderView('layout-part/posts/list', $data);
     }
 
     public function showAdd()
     {
-        $this->renderView('layout-part/posts/add');
+        $getGroup = $this->categoryModel->getAllCategory();
+        $data = [
+            'getGroup' => $getGroup
+        ];
+        $this->renderView('layout-part/posts/add', $data);
     }
 
     public function add()
@@ -98,6 +111,10 @@ class PostController extends BaseController
             $filter = filterData();
             $errors = [];
 
+            // echo '<pre>';
+            // print_r($filter);
+            // echo '</pre>';
+            // die();
             // validate fullname
             if (empty(trim($filter['tittle']))) {
                 $errors['tittle']['required'] = 'Tên bắt buộc phải nhập';
@@ -121,6 +138,28 @@ class PostController extends BaseController
                 ];
                 $insertStatus = $this->postModel->insertPosts($dataInsert);
                 if ($insertStatus) {
+                    //Lấy ra id post vừa tạo
+                    $postId = $this->postModel->getLastIdPosts();
+                    $category = $filter['category_ids'];
+                    //Kiểm tra xem người dùng có chọn category nào không
+                    if (!empty($category)) {
+                        foreach ($category as $item) {
+                            $data = [
+                                'post_id' => $postId,
+                                'category_id' => $item
+                            ];
+                            //insert vào bảng post_category
+                            $checkPostCategory = $this->categoryModel->insertPostCategory($data);
+                            //Kiểm tra
+                            if ($checkPostCategory) {
+                                setSessionFlash('msg', 'Thêm bài viết thành công.');
+                                setSessionFlash('msg_type', 'success');
+                            } else {
+                                setSessionFlash('msg', 'Thêm post_category thất bại.');
+                                setSessionFlash('msg_type', 'danger');
+                            }
+                        }
+                    }
                     setSessionFlash('msg', 'Thêm bài viết thành công.');
                     setSessionFlash('msg_type', 'success');
                     reload('/posts');
@@ -210,11 +249,17 @@ class PostController extends BaseController
             $condition = 'id=' . $posts_id;
             $checkID = $this->postModel->getOnePost($condition);
             if (!empty($checkID)) {
-                $deleteStatus = $this->postModel->deletePosts("id = $posts_id");
-                if ($deleteStatus) {
-                    setSessionFlash('msg', 'Xoá bài viết thành công.');
-                    setSessionFlash('msg_type', 'success');
-                    reload('/posts');
+                $deletePostCategoryStatus = $this->postModel->deletePostsCategory("post_id = $posts_id");
+                if ($deletePostCategoryStatus) {
+                    $deleteStatus = $this->postModel->deletePosts("id = $posts_id");
+                    if ($deleteStatus) {
+                        setSessionFlash('msg', 'Xoá bài viết thành công.');
+                        setSessionFlash('msg_type', 'success');
+                        reload('/posts');
+                    }
+                } else {
+                    setSessionFlash('msg', 'Đã có lỗi xảy ra, vui lòng thử lại sau.');
+                    setSessionFlash('msg_type', 'danger');
                 }
             } else {
                 setSessionFlash('msg', 'Bài viết không tồn tại.');

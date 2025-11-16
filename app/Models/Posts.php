@@ -6,9 +6,13 @@ class Post extends CoreModel
         parent::__construct();
     }
 
-    public function getAllPosts()
+    public function getAllPosts($sql = '')
     {
-        return $this->getALL("SELECT * FROM posts");
+        if (!empty($sql)) {
+            return $this->getALL($sql);
+        } else {
+            return $this->getALL("SELECT * FROM posts");
+        }
     }
 
     public function getAllPostsAuthor()
@@ -26,6 +30,11 @@ class Post extends CoreModel
         return $this->getRows('SELECT * from posts');
     }
 
+    public function getLastIdPosts()
+    {
+        return parent::getLastID();
+    }
+
     public function insertPosts($data)
     {
         return $this->insert('posts', $data);
@@ -39,5 +48,10 @@ class Post extends CoreModel
     public function deletePosts($condition)
     {
         return $this->delete('posts', $condition);
+    }
+
+    public function deletePostsCategory($condition)
+    {
+        return $this->delete('post_category', $condition);
     }
 }

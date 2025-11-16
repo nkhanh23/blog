@@ -9,7 +9,6 @@ $data = [
 layout('header', $data);
 layout('sidebar');
 
-
 $msg = getSessionFlash('msg');
 $msg_type = getSessionFlash('msg_type');
 $oldData = getSessionFlash('oldData');
@@ -89,6 +88,23 @@ $errorsArr  = getSessionFlash('errors');
                                                                         echo oldata($oldData, 'shares');
                                                                     } ?>" class="form-control" placeholder="Mật khẩu">
             </div>
+            <div class="col-12 pb-3">
+                <label class="d-block mb-2">Lĩnh vực</label>
+
+                <!-- Khung cuộn -->
+                <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                    <?php foreach ($getGroup as $item): ?>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="category_ids[]"
+                            id="category_<?php echo $item['id']; ?>" value="<?php echo $item['id']; ?>">
+                        <label class="form-check-label" for="category_<?php echo $item['id']; ?>">
+                            <?php echo $item['name']; ?>
+                        </label>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
 
         </div>
         <button type="submit" class="btn btn-success">Xác nhận</button>
