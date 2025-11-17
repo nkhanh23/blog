@@ -6,7 +6,8 @@ if (!defined('_nkhanh')) {
 //Hàm thay đổi tiêu đề tùy thuộc vào trang đang mở
 function layout($layoutName, $data = [])
 {
-
+    // biến hóa các key trong $data thành biến thường
+    extract($data);
     if (file_exists('./app/Views/parts/' . $layoutName . '.php')) {
         require_once './app/Views/parts/' . $layoutName . '.php';
     }

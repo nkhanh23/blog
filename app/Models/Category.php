@@ -16,6 +16,63 @@ class Category extends CoreModel
         return $this->getALL("SELECT * FROM category LIMIT 4 ");
     }
 
+    public function getAllPostCategory($sql = '')
+    {
+        if (!empty($sql)) {
+            return $this->getALL($sql);
+        } else {
+            return $this->getALL("SELECT * FROM category LIMIT 4 ");
+        }
+    }
+
+
+
+    public function getAllPostCategorySports()
+    {
+        return $this->getALL("SELECT p.*,c.name
+        FROM posts p
+        JOIN post_category pc ON p.id = pc.post_id
+        JOIN category c ON pc.category_id = c.id
+        WHERE c.name = 'Sports';");
+    }
+
+    public function getAllPostCategoryMagazine()
+    {
+        return $this->getALL("SELECT p.*,c.name
+        FROM posts p
+        JOIN post_category pc ON p.id = pc.post_id
+        JOIN category c ON pc.category_id = c.id
+        WHERE c.name = 'Magazine';");
+    }
+
+    public function getAllPostCategoryPolitics()
+    {
+        return $this->getALL("SELECT p.*,c.name
+        FROM posts p
+        JOIN post_category pc ON p.id = pc.post_id
+        JOIN category c ON pc.category_id = c.id
+        WHERE c.name = 'Politics';");
+    }
+
+    public function getAllPostCategoryTechnology()
+    {
+        return $this->getALL("SELECT p.*,c.name
+        FROM posts p
+        JOIN post_category pc ON p.id = pc.post_id
+        JOIN category c ON pc.category_id = c.id
+        WHERE c.name = 'Technology';");
+    }
+
+    public function getAllPostCategoryFashion()
+    {
+        return $this->getALL("SELECT p.*,c.name
+        FROM posts p
+        JOIN post_category pc ON p.id = pc.post_id
+        JOIN category c ON pc.category_id = c.id
+        WHERE c.name = 'Fashion';");
+    }
+
+
     public function getOneCategory($condition)
     {
         return $this->getOne("SELECT * FROM category Where $condition");
